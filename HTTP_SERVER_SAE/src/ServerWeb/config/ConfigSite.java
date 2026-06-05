@@ -2,18 +2,18 @@ package ServerWeb.config;
 
 public class ConfigSite {
     private int port;
-    private String root, Index, AccessLog, ErrorLog;
+    private String DocumentRoot, DefaultIndex, AccessLog, ErrorLog;
 
     public int getPort() {
         return port;
     }
 
-    public String getRoot() {
-        return root;
+    public String getDocumentRoot() {
+        return DocumentRoot;
     }
 
-    public String getIndex() {
-        return Index;
+    public String getDefaultIndex() {
+        return DefaultIndex;
     }
 
     public String getAccessLog() {
@@ -29,15 +29,15 @@ public class ConfigSite {
     public void setErrorLog(String errorLog) {
         ErrorLog = errorLog;
     }
-    public void setRoot(String root) {
-        this.root = root;
+    public void setDocumentRoot(String documentRoot) {
+        this.DocumentRoot = documentRoot;
     }
 
     public void setPort(int port) {
         this.port = port;
     }
 
-    public void setIndex(String index) {
-        Index = index;
+    public void setDefaultIndex(String defaultIndex) {
+        DefaultIndex = defaultIndex;
     }
 }

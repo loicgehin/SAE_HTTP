@@ -1,13 +1,10 @@
 package ServerWeb.config;
 
 
-import javax.xml.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -36,10 +33,10 @@ public class LireConfig {
                 Element eElement = (Element) nNode;
                 ConfigSite site = new ConfigSite();
                 site.setPort(Integer.parseInt(eElement.getElementsByTagName("port").item(0).getTextContent()));
-                site.setRoot(eElement.getElementsByTagName("root").item(0).getTextContent());
-                site.setIndex(eElement.getElementsByTagName("index").item(0).getTextContent());
-                site.setAccessLog(eElement.getElementsByTagName("accessLog").item(0).getTextContent());
-                site.setErrorLog(eElement.getElementsByTagName("errorLog").item(0).getTextContent());
+                site.setDocumentRoot(eElement.getElementsByTagName("DocumentRoot").item(0).getTextContent());
+                site.setDefaultIndex(eElement.getElementsByTagName("DefaultIndex").item(0).getTextContent());
+                site.setAccessLog(eElement.getElementsByTagName("AccessLog").item(0).getTextContent());
+                site.setErrorLog(eElement.getElementsByTagName("ErrorLog").item(0).getTextContent());
                 sites.add(site);
             }
         }
