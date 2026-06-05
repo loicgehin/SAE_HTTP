@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class LireConfig {
 
-    public static ArrayList<ConfigSite> parse(String path) throws  Exception {
+    public static ArrayList<ConfigSite> explorer(String path) throws  Exception {
         ArrayList<ConfigSite> sites = new ArrayList<>();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -42,7 +42,7 @@ public class LireConfig {
 
     public static void main(String[] args) {
         try {
-            ArrayList<ConfigSite> sites = parse("src/ServerWeb/conf/d/serverWeb.conf");
+            ArrayList<ConfigSite> sites = explorer("src/ServerWeb/conf/d/serverWeb.conf");
             for (ConfigSite site : sites) {
                 System.out.println(site);
             }
