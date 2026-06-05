@@ -10,12 +10,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class SiteConf extends Thread{
-    ConfigSite site=new ConfigSite();
+    ConfigSite site;
 
+    /**
+     * constructeur de la classe SiteConf
+     * @param site site a configurer
+     */
     public SiteConf(ConfigSite site) {
         this.site = site;
     }
 
+    /**
+     * lance le site
+     */
     public void run(){
         try {
             ServerSocket server = new ServerSocket(site.getPort());
@@ -38,16 +45,15 @@ public class SiteConf extends Thread{
                     System.out.println(msg[0] + " " + url);
 
                 }
-
+                //crée le bon chemin pour acceder au fichier
                 if(url.equals("/")){
                     url = "/" + site.getDefaultIndex();
                 }
-
                 Path path = Paths.get("web"+site.getDocumentRoot() +"/" + url);
                 File fichier = new File(path.toString());
                 System.out.println("chemin : " + path.toString());
                 System.out.println("chemin absolu : " + fichier.getAbsolutePath());
-
+                //dans le cas ou le fichier existe
                 if (fichier.exists()) {
                     System.out.println("trouvé, envoi...");
                     byte[] envoi = Files.readAllBytes(fichier.toPath());
@@ -62,7 +68,7 @@ public class SiteConf extends Thread{
                     os.write(envoi);
                     os.flush();
 
-                } else {
+                } else { //si le fichier n'existe pas, erreur 404
                     System.out.println("fichier non trouvable");
                     os.write("HTTP/1.1 404 Not Found\r\n".getBytes());
                     os.write("Content-Type: text/html\r\n".getBytes());
