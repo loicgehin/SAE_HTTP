@@ -40,12 +40,13 @@ public class SiteConf extends Thread{
                 }
 
                 if(url.equals("/")){
-                    url = site.getDefaultIndex();
+                    url = "/" + site.getDefaultIndex();
                 }
 
-                Path path = Paths.get(site.getDocumentRoot() + url);
+                Path path = Paths.get("web"+site.getDocumentRoot() +"/" + url);
                 File fichier = new File(path.toString());
-
+                System.out.println("chemin : " + path.toString());
+                System.out.println("chemin absolu : " + fichier.getAbsolutePath());
 
                 if (fichier.exists()) {
                     System.out.println("trouvé, envoi...");
