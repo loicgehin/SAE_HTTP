@@ -1,4 +1,4 @@
-package ServerWeb.config;
+package ServerWeb.conf.d;
 
 
 import javax.xml.parsers.DocumentBuilder;

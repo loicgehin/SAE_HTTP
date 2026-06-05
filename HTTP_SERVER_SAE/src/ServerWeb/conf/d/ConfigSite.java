@@ -1,4 +1,4 @@
-package ServerWeb.config;
+package ServerWeb.conf.d;
 
 public class ConfigSite {
     private int port;
