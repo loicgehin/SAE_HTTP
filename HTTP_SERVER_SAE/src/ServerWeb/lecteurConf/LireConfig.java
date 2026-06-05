@@ -1,21 +1,18 @@
-package ServerWeb.conf.d;
+package ServerWeb.lecteurConf;
 
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class LireConfig {
 
-    public static ArrayList<ConfigSite> parse(String path) throws IOException, SAXException, ParserConfigurationException, SAXException {
+    public static ArrayList<ConfigSite> parse(String path) throws  Exception {
         ArrayList<ConfigSite> sites = new ArrayList<>();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -41,5 +38,16 @@ public class LireConfig {
             }
         }
         return sites;
+    }
+
+    public static void main(String[] args) {
+        try {
+            ArrayList<ConfigSite> sites = parse("src/ServerWeb/conf/d/serverWeb.conf");
+            for (ConfigSite site : sites) {
+                System.out.println(site);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

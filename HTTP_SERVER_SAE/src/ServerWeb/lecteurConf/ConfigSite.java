@@ -1,4 +1,4 @@
-package ServerWeb.conf.d;
+package ServerWeb.lecteurConf;
 
 public class ConfigSite {
     private int port;
@@ -39,5 +39,16 @@ public class ConfigSite {
 
     public void setDefaultIndex(String defaultIndex) {
         DefaultIndex = defaultIndex;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigSite{" +
+                "port=" + port +
+                ", DocumentRoot='" + DocumentRoot + '\'' +
+                ", DefaultIndex='" + DefaultIndex + '\'' +
+                ", AccessLog='" + AccessLog + '\'' +
+                ", ErrorLog='" + ErrorLog + '\'' +
+                '}';
     }
 }
