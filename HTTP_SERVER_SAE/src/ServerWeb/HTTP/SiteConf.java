@@ -1,6 +1,7 @@
 package ServerWeb.HTTP;
 
 import ServerWeb.lecteurConf.ConfigSite;
+import ServerWeb.log.myweb.EcrireLog;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -11,6 +12,7 @@ import java.nio.file.Paths;
 
 public class SiteConf extends Thread{
     ConfigSite site;
+    EcrireLog log;
 
     /**
      * constructeur de la classe SiteConf
@@ -18,6 +20,13 @@ public class SiteConf extends Thread{
      */
     public SiteConf(ConfigSite site) {
         this.site = site;
+        String AccessLog = "logs"+site.getAccessLog();
+        String ErrorLog = "logs"+site.getErrorLog();
+        //creation/acces au dossier logs
+        new File(AccessLog).getParentFile().mkdirs();
+        new File(ErrorLog).getParentFile().mkdirs();
+        this.log = new EcrireLog(AccessLog, ErrorLog);
+
     }
 
     /**
@@ -56,11 +65,12 @@ public class SiteConf extends Thread{
                 //dans le cas ou le fichier existe
                 if (fichier.exists()) {
                     System.out.println("trouvé, envoi...");
+                    //ecriture du log acces
+                    log.AccesLog(site.getPort(), url);
                     byte[] envoi = Files.readAllBytes(fichier.toPath());
                     os.write("HTTP/1.1 200 OK\r\n".getBytes());
                     os.write(("Content length: " + envoi.length + "\r\n").getBytes());
                     os.write("Connection: keep-Alive\r\n".getBytes());
-
                     os.write(("Content-Type: " + Files.probeContentType(fichier.toPath()) + "\r\n").getBytes());
                     os.write("\r\n".getBytes());
                     os.flush();
@@ -70,6 +80,8 @@ public class SiteConf extends Thread{
 
                 } else { //si le fichier n'existe pas, erreur 404
                     System.out.println("fichier non trouvable");
+                    //ecriture du log error
+                    log.AccesError(site.getPort(), url);
                     os.write("HTTP/1.1 404 Not Found\r\n".getBytes());
                     os.write("Content-Type: text/html\r\n".getBytes());
                     os.write("Connection: close\r\n".getBytes());
