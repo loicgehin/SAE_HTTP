@@ -2,6 +2,7 @@ package ServerWeb.HTTP;
 
 import ServerWeb.lecteurConf.ConfigSite;
 import ServerWeb.log.myweb.EcrireLog;
+import ServerWeb.status.GererStatus;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -58,6 +59,31 @@ public class SiteConf extends Thread{
                     System.out.println(msg[0] + " " + url);
 
                 }
+                //si url est /status
+                if (url.equals("/status")) {
+                    System.out.println("Génération de la page de statut...");
+                    log.AccesLog(site.getPort(), url);
+
+                    // recupere la chaine de caractere du status
+                    String statusContent = GererStatus.getStatusPage();
+                    byte[] statusBytes = statusContent.getBytes();
+
+                    // envoi le status
+                    os.write("HTTP/1.1 200 OK\r\n".getBytes());
+                    os.write(("Content-Length: " + statusBytes.length + "\r\n").getBytes());
+                    os.write("Connection: close\r\n".getBytes());
+                    os.write("Content-Type: text/plain; charset=utf-8\r\n".getBytes()); // text/plain pour garder la mise en forme textuelle
+                    os.write("\r\n".getBytes());
+                    os.write(statusBytes);
+                    os.flush();
+
+                    br.close();
+                    os.close();
+                    socket.close();
+                    //methode trouve pour coninue la boucle et permettre de retourner sur la page
+                    continue;
+                }
+
                 //crée le bon chemin pour acceder au fichier
                 if(url.equals("/")){
                     url = "/" + site.getDefaultIndex();
