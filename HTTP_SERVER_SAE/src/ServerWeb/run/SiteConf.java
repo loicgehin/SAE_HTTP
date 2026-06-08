@@ -110,7 +110,7 @@ public class SiteConf extends Thread{
                     String ligne;
                     while ((ligne = br.readLine()) != null && !ligne.isEmpty()) {
                         if (ligne.startsWith("If-None-Match:")) {
-                            etagNavigateur = ligne.substring("If-None-Match:".length()).trim();
+                            etagNavigateur = ligne.substring("If-None-Match:".length());
                         }
                     }
                     //dans le cas ou le fichier existe
@@ -119,14 +119,14 @@ public class SiteConf extends Thread{
                         String etag = GererCache.genererETag(fichier);
 
                         if (GererCache.dejaAJour(etagNavigateur, etag)) {
-                            // fichier pas changé → 304
+                            //fichier pas changé: erreur 304
                             os.write("HTTP/1.1 304 Not Modified\r\n".getBytes());
                             os.write(("ETag: " + etag + "\r\n").getBytes());
                             os.write("\r\n".getBytes());
                             os.flush();
 
                         } else {
-                            // fichier changer, on envoie normalement
+                            //fichier changer, on envoie normalement
                             byte[] envoi = Files.readAllBytes(fichier.toPath());
                             os.write("HTTP/1.1 200 OK\r\n".getBytes());
                             os.write(("Date: " + getServerTime() + "\r\n").getBytes());
