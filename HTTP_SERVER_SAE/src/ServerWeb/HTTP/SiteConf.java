@@ -11,6 +11,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class SiteConf extends Thread{
+    /**
+     * site a configurer
+     * log des acces et des erreurs
+     */
     ConfigSite site;
     EcrireLog log;
 
@@ -20,8 +24,8 @@ public class SiteConf extends Thread{
      */
     public SiteConf(ConfigSite site) {
         this.site = site;
-        String AccessLog = "logs"+site.getAccessLog();
-        String ErrorLog = "logs"+site.getErrorLog();
+        String AccessLog = site.getAccessLog();
+        String ErrorLog = site.getErrorLog();
         //creation/acces au dossier logs
         new File(AccessLog).getParentFile().mkdirs();
         new File(ErrorLog).getParentFile().mkdirs();
