@@ -107,6 +107,12 @@ public class SiteConf extends Thread{
                     System.out.println("chemin absolu : " + fichier.getAbsolutePath());
 
                     String etagNavigateur = null;
+                    String ligne;
+                    while ((ligne = br.readLine()) != null && !ligne.isEmpty()) {
+                        if (ligne.startsWith("If-None-Match:")) {
+                            etagNavigateur = ligne.substring("If-None-Match:".length()).trim();
+                        }
+                    }
                     //dans le cas ou le fichier existe
                     if (fichier.exists()) {
                         System.out.println("trouvé, envoi...");

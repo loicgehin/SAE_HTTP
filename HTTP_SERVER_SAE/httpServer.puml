@@ -9,6 +9,7 @@ class SiteConf {
     - site : ConfigSite
     - log : EcrireLog
     + SiteConf(site: ConfigSite)
+    - getServerTime() : String
     + run() : void
 }
 
@@ -40,6 +41,10 @@ class GererCache {
     + {static} dejaAJour(etagNav: String, etagFic: String) : boolean
 }
 
+class GererStatus {
+    + {static} getStatusPage() : String
+}
+
 class EcrireLog {
     - cheminLog : String
     - cheminError : String
@@ -51,11 +56,10 @@ class EcrireLog {
 
 HttpServer --> LireConfig : utilise
 HttpServer --> SiteConf : crée et démarre
-HttpServer --> ConfigSite : liste de
-
+LireConfig --> ConfigSite : retourne liste de
 SiteConf --> ConfigSite : contient
 SiteConf --> EcrireLog : contient
 SiteConf --> GererCache : utilise
+SiteConf --> GererStatus : utilise
 
-LireConfig --> ConfigSite : retourne liste de
 @enduml
