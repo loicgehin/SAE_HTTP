@@ -1,4 +1,10 @@
 @startuml
+skinparam classAttributeIconSize 0
+
+class HttpServer {
+    + {static} main(args: String[]) : void
+}
+
 class SiteConf {
     - site : ConfigSite
     - log : EcrireLog
@@ -8,44 +14,39 @@ class SiteConf {
 
 class LireConfig {
     + {static} explorer(path: String) : ArrayList<ConfigSite>
-    }
-
-    class ConfigSite {
-        - port : int
-        - DocumentRoot : String
-        - DefaultIndex : String
-        - AccessLog : String
-        - ErrorLog : String
-        + getPort() : int
-        + getDocumentRoot() : String
-        + getDefaultIndex() : String
-        + getAccessLog() : String
-        + getErrorLog() : String
-        + setPort(port: int) : void
-        + setDocumentRoot(r: String) : void
-        + setDefaultIndex(i: String) : void
-        + setAccessLog(a: String) : void
-        + setErrorLog(e: String) : void
-        + toString() : String
-    }
 }
 
-package "ServerWeb.cache" {
-    class GererCache {
-        + {static} genererETag(fichier: File) : String
-        + {static} dejaAJour(etagNav: String, etagFic: String) : boolean
-    }
+class ConfigSite {
+    - port : int
+    - DocumentRoot : String
+    - DefaultIndex : String
+    - AccessLog : String
+    - ErrorLog : String
+    + getPort() : int
+    + getDocumentRoot() : String
+    + getDefaultIndex() : String
+    + getAccessLog() : String
+    + getErrorLog() : String
+    + setPort(port: int) : void
+    + setDocumentRoot(r: String) : void
+    + setDefaultIndex(i: String) : void
+    + setAccessLog(a: String) : void
+    + setErrorLog(e: String) : void
+    + toString() : String
 }
 
-package "ServerWeb.log.myweb" {
-    class EcrireLog {
-        - cheminLog : String
-        - cheminError : String
-        + EcrireLog(cheminLog: String, cheminError: String)
-        + AccesLog(port: int, url: String) : void
-        + AccesError(port: int, url: String) : void
-        - ecrire(cheminFichier: String, message: String) : void
-    }
+class GererCache {
+    + {static} genererETag(fichier: File) : String
+    + {static} dejaAJour(etagNav: String, etagFic: String) : boolean
+}
+
+class EcrireLog {
+    - cheminLog : String
+    - cheminError : String
+    + EcrireLog(cheminLog: String, cheminError: String)
+    + AccesLog(port: int, url: String) : void
+    + AccesError(port: int, url: String) : void
+    - ecrire(cheminFichier: String, message: String) : void
 }
 
 HttpServer --> LireConfig : utilise
@@ -57,5 +58,4 @@ SiteConf --> EcrireLog : contient
 SiteConf --> GererCache : utilise
 
 LireConfig --> ConfigSite : retourne liste de
-
 @enduml
