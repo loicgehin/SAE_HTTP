@@ -1,5 +1,6 @@
 package ServerWeb.HTTP;
 
+import ServerWeb.cache.GererCache;
 import ServerWeb.lecteurConf.ConfigSite;
 import ServerWeb.log.myweb.EcrireLog;
 import ServerWeb.status.GererStatus;
@@ -92,22 +93,33 @@ public class SiteConf extends Thread{
                 File fichier = new File(path.toString());
                 System.out.println("chemin : " + path.toString());
                 System.out.println("chemin absolu : " + fichier.getAbsolutePath());
+
+                String etagNavigateur = null;
                 //dans le cas ou le fichier existe
                 if (fichier.exists()) {
                     System.out.println("trouvé, envoi...");
-                    //ecriture du log acces
-                    log.AccesLog(site.getPort(), url);
-                    byte[] envoi = Files.readAllBytes(fichier.toPath());
-                    os.write("HTTP/1.1 200 OK\r\n".getBytes());
-                    os.write(("Content length: " + envoi.length + "\r\n").getBytes());
-                    os.write("Connection: keep-Alive\r\n".getBytes());
-                    os.write(("Content-Type: " + Files.probeContentType(fichier.toPath()) + "\r\n").getBytes());
-                    os.write("\r\n".getBytes());
-                    os.flush();
+                    String etag = GererCache.genererETag(fichier);
 
-                    os.write(envoi);
-                    os.flush();
+                    if (GererCache.dejaAJour(etagNavigateur, etag)) {
+                        // fichier pas changé → 304
+                        os.write("HTTP/1.1 304 Not Modified\r\n".getBytes());
+                        os.write(("ETag: " + etag + "\r\n").getBytes());
+                        os.write("\r\n".getBytes());
+                        os.flush();
 
+                    } else {
+                        // fichier changer, on envoie normalement
+                        byte[] envoi = Files.readAllBytes(fichier.toPath());
+                        os.write("HTTP/1.1 200 OK\r\n".getBytes());
+                        os.write(("Content-Length: " + envoi.length + "\r\n").getBytes());
+                        os.write("Connection: keep-Alive\r\n".getBytes());
+                        os.write(("Content-Type: " + Files.probeContentType(fichier.toPath()) + "\r\n").getBytes());
+                        os.write(("ETag: " + etag + "\r\n").getBytes());
+                        os.write("\r\n".getBytes());
+                        os.flush();
+                        os.write(envoi);
+                        os.flush();
+                    }
                 } else { //si le fichier n'existe pas, erreur 404
                     System.out.println("fichier non trouvable");
                     //ecriture du log error
