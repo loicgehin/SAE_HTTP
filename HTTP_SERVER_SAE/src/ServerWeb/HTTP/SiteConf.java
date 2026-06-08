@@ -82,7 +82,7 @@ public class SiteConf extends Thread{
                 socket.close();
 
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
