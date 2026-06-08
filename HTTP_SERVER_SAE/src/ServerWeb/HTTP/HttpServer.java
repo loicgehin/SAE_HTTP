@@ -12,7 +12,7 @@ public class HttpServer {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        ArrayList<ConfigSite> sites = LireConfig.explorer("src/ServerWeb/conf/d/serverWeb.conf");
+        ArrayList<ConfigSite> sites = LireConfig.explorer("src/ServerWeb/conf/serverWeb.conf");
         //pour chaque site, on lance un thread de configuration
         for (ConfigSite site : sites) {
             SiteConf siteConf = new SiteConf(site);
